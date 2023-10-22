@@ -27,6 +27,9 @@ SITE_ROOT = os.path.join(BASE_DIR, 'site')
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("polls/", include("polls.urls")),
+    path("", include("home.urls")),
+    path("hello", include("hello.urls")),
+    path("main/", include("main.urls")),
     re_path(r'^site/(?P<path>.*)$', serve,
         {'document_root': SITE_ROOT, 'show_indexes': True},
         name='site_path'

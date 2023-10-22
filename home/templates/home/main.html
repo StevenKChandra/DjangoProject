@@ -1,0 +1,8 @@
+<h1>Application list:</h1>
+{% if applications %}
+    <ul>
+        {% for application in applications %}
+            <li><a href="{% url application.link %}">{{ application.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}

@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class PollsConfig(AppConfig):
+class HomeConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'polls'
-    verbose_name = "A Polls Application"
+    name = 'home'
+    verbose_name = 'Web Home Page'
