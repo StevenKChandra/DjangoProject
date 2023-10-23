@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     "main.apps.MainConfig",
     "hello.apps.HelloConfig",
     "autos.apps.AutosConfig",
+    "cats.apps.CatsConfig",
+
+    # extensions
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
