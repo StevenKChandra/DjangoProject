@@ -1,0 +1,22 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+  <h1>Manufacturer List</h1>
+  {% if manufacturer_list %}
+  <ul>
+    {% for manufacturer in manufacturer_list %}
+      <li>
+          {{ manufacturer.name }}
+         (<a href="{% url 'autos:manufacturer_update' manufacturer.id %}">Update</a> |
+          <a href="{% url 'autos:manufacturer_delete' manufacturer.id %}">Delete</a>)
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no manufacturers in the library.</p>
+  {% endif %}
+  <p><a href="{% url 'autos:manufacturer_create' %}">Add a manufacturer</a></p>
+  <p>
+    <a href="{% url 'autos:index' %}">Back to autos</a>
+  </p>
+{% endblock %}
