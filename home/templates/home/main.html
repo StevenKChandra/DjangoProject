@@ -1,8 +1,13 @@
-<h1>Application list:</h1>
-{% if applications %}
-    <ul>
-        {% for application in applications %}
-            <li><a href="{% url application.link %}">{{ application.name }}</a></li>
-        {% endfor %}
-    </ul>
-{% endif %}
+{ % extends "base_bootsrap.html "}
+
+{% block content %}
+    <h1>Welcome to {{ settings.WEB_NAME }}</h1>
+    <h3>Sample application list:</h3>
+    {% if applications %}
+        <ul>
+            {% for application in applications %}
+                <li><a href="{% url application.link %}">{{ application.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock content %}

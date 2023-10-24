@@ -1,2 +1,5 @@
 django
 django-extensions
+django-crispy-forms
+crispy-bootstrap5
+mysqlclient

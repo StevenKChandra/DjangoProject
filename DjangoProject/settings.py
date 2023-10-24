@@ -15,6 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+WEB_NAME = "Steven's website project"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -37,16 +38,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+
+    # extensions
+    "django_extensions",
+    "crispy_forms",
+    "crispy_bootstrap5",
+    
+    # applications
     "polls.apps.PollsConfig",
     "home.apps.HomeConfig",
     "main.apps.MainConfig",
     "hello.apps.HelloConfig",
     "autos.apps.AutosConfig",
     "cats.apps.CatsConfig",
-
-    # extensions
-    "django_extensions",
+    "ads.apps.AdsConfig",
 ]
+
+# For crispy forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

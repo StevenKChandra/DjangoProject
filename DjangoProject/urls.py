@@ -33,6 +33,7 @@ urlpatterns = [
     path("main/", include("main.urls")),
     path("autos/", include("autos.urls")),
     path("cats/", include("cats.urls")),
+    path("ads/", include("ads.urls")),
     re_path(r'^site/(?P<path>.*)$', serve,
         {'document_root': SITE_ROOT, 'show_indexes': True},
         name='site_path'
