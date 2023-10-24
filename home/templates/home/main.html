@@ -1,7 +1,7 @@
-{ % extends "base_bootsrap.html "}
+{% extends "base_bootstrap.html" %}
 
 {% block content %}
-    <h1>Welcome to {{ settings.WEB_NAME }}</h1>
+    <h1>Welcome to {{ web_name }} </h1>
     <h3>Sample application list:</h3>
     {% if applications %}
         <ul>
