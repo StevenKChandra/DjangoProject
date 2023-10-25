@@ -4,22 +4,36 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
+from django.db.models import Q
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from ads.owner import OwnerDeleteView
 from ads.models import Ad, Comment, Fav
 from ads.forms import CommentForm, CreateForm
 # Create your views here.
 
-class AdListView(generic.ListView):
-    model = Ad
+class AdListView(View):
     template_name = "ads/ad_list.html"
 
     def get(self, request):
-        ad_list = Ad.objects.all()
+        search_key = request.GET.get("search", False)
+
+        if search_key:
+            query = Q(title__icontains=search_key)
+            query.add(Q(text__icontains=search_key), Q.OR)
+            query.add(Q(tags__name__in=[search_key]), Q.OR)
+            ad_list = Ad.objects.filter(query).select_related().order_by("-updated_at")[:10]
+        else:
+            ad_list = Ad.objects.all().order_by("-updated_at")[:10]
+        
+        for ad in ad_list:
+            ad.natural_updated = naturaltime(ad.updated_at)
+
         fav = []
         if request.user.is_authenticated:
             rows = request.user.favourite_ads.values("id")
             fav = [row["id"] for row in rows]
+        
         context = {"ad_list": ad_list, "favourites": fav}
         return render(request, self.template_name, context)
 
@@ -54,6 +68,7 @@ class AdCreateView(LoginRequiredMixin, View):
         ad = form.save(commit=False)
         ad.owner = self.request.user
         ad.save()
+        form.save_m2m() # https://django-taggit.readthedocs.io/en/latest/forms.html#commit-false
 
         return redirect(self.success_url)
 
@@ -77,6 +92,7 @@ class AdUpdateView(LoginRequiredMixin, View):
 
         ad = form.save(commit=False)
         ad.save()
+        form.save_m2m() # https://django-taggit.readthedocs.io/en/latest/forms.html#commit-false
 
         return redirect(self.success_url)
     
@@ -94,6 +110,7 @@ class CommentCreateView(LoginRequiredMixin, generic.CreateView):
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
 
+    # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id
     def get_success_url(self):
         ad = self.object.ad
         return reverse('ads:detail', args=[ad.id])

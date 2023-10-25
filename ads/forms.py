@@ -5,10 +5,8 @@ from ads.humanize import naturalsize
 
 # Create the form class.
 
-# strip means to remove whitespace from the beginning and the end before storing the column
-
-
 class CommentForm(forms.Form):
+    # strip means to remove whitespace from the beginning and the end before storing the column
     comment = forms.CharField(required=True, max_length=500, min_length=3, strip=True)
 
 class CreateForm(forms.ModelForm):
@@ -21,10 +19,9 @@ class CreateForm(forms.ModelForm):
     picture = forms.FileField(required=False, label='File to Upload <= '+max_upload_limit_text)
     upload_field_name = 'picture'
 
-    # Hint: this will need to be changed for use in the ads application :)
     class Meta:
         model = Ad
-        fields = ["title", "price", "text", "picture"]
+        fields = ["title", "price", "text", "picture", "tags"]
 
     # Validate the size of the picture
     def clean(self):
@@ -48,5 +45,6 @@ class CreateForm(forms.ModelForm):
 
         if commit:
             instance.save()
+            self.save_m2m()
 
         return instance

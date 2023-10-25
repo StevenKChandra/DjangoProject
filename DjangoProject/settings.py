@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "django_extensions",
     "crispy_forms",
     "crispy_bootstrap5",
-    'social_django',
+    "social_django",
+    "taggit",
     
     # applications
     "polls.apps.PollsConfig",
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+# For tagging
 TAGGIT_CASE_INSENSITIVE = True
 
 # Social login
