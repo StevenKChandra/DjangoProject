@@ -10,11 +10,36 @@
 </span>
 <h1>{{ ad.title }}</h1>
 <p>
+    <h3>Description:</h3><br>
     {{ ad.text }}
 </p>
 <p>
     Price: {{ ad.price}} pounds per hour
 </p>
+{% if user.is_authenticated %}
+<br clear="all">
+<p>
+{% load crispy_forms_tags %}
+<form method="post" action="{% url 'ads:comment_create' ad.id %}">
+    {% csrf_token %}
+    {{ comment_form|crispy }}
+    <input type="submit" value="Submit">
+    <input type="submit" value="All Forums" onclick="window.location.href='{% url 'ads:index' %}';return false;">
+</form>
+</p>
+{% endif %}
+{% if comments %}
+<h3>List of comments:</h3>
+<ol>
+    {% for comment in comments %}
+    <li>{{ comment.text }}
+        {% if user == comment.owner %}
+        <a href="{% url 'ads:comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ol>
+{% endif %}
 <p>
     <a href="{% url 'ads:index' %}">All ads</a>
 </p>
