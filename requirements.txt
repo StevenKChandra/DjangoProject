@@ -3,3 +3,5 @@ django-extensions
 django-crispy-forms
 crispy-bootstrap5
 mysqlclient
+social-auth-app-django
+social-auth-core
