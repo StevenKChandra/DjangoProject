@@ -113,7 +113,7 @@ from django.db.utils import IntegrityError
 @method_decorator(csrf_exempt, name="dispatch")
 class FavouriteView(LoginRequiredMixin, View):
     def post(self, request, pk):
-        ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
+        ad = get_object_or_404(Ad, id=pk)
         fav = Fav(user = self.request.user, ad=ad)
         try:
             fav.save()
@@ -125,7 +125,7 @@ class FavouriteView(LoginRequiredMixin, View):
 @method_decorator(csrf_exempt, name="dispatch")
 class UnfavouriteView(LoginRequiredMixin, View):
     def post(self, request, pk):
-        ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
+        ad = get_object_or_404(Ad, id=pk)
         try:
             fav = Fav.objects.get(user=self.request.user, ad=ad).delete()
         except Fav.DoesNotExist as e:
