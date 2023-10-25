@@ -2,7 +2,7 @@ from django.views import generic
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 
 from ads.owner import OwnerDeleteView
@@ -27,7 +27,7 @@ class AdDetailView(generic.DetailView):
 
 class AdCreateView(LoginRequiredMixin, View):
     template_name = "ads/ad_form.html"
-    success_url = "ads:index"
+    success_url = reverse_lazy("ads:index")
     
     def get(self, request):
         context = {"form": CreateForm()}
@@ -49,15 +49,16 @@ class AdCreateView(LoginRequiredMixin, View):
     
 class AdUpdateView(LoginRequiredMixin, View):
     template_name = "ads/ad_form.html"
-    success_url = "ads:index"
+    success_url = reverse_lazy("ads:index")
     
     def get(self, request, pk):
-        ad = get_object_or_404(Ad, id=pk, owner=request.user)
+        ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
         context = {"form": CreateForm(instance=ad)}
         return render(request, self.template_name, context)
     
     def post(self, request, pk):
-        form = CreateForm(request.POST, request.FILES or None)
+        ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
+        form = CreateForm(request.POST, request.FILES or None, instance=ad)
 
         if not form.is_valid():
             context = {"form": form}
