@@ -6,16 +6,27 @@ from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 
 from ads.owner import OwnerDeleteView
-from ads.models import Ad, Comment
+from ads.models import Ad, Comment, Fav
 from ads.forms import CommentForm, CreateForm
 # Create your views here.
 
 class AdListView(generic.ListView):
     model = Ad
+    template_name = "ads/ad_list.html"
+
+    def get(self, request):
+        ad_list = Ad.objects.all()
+        fav = []
+        if request.user.is_authenticated:
+            rows = request.user.favourite_ads.values("id")
+            fav = [row["id"] for row in rows]
+        context = {"ad_list": ad_list, "favourites": fav}
+        return render(request, self.template_name, context)
 
 class AdDetailView(generic.DetailView):
     model = Ad
     template_name = "ads/ad_detail.html"
+
     def get(self, request, pk):
         ad = get_object_or_404(Ad, id=pk)
         context = {}
@@ -94,3 +105,29 @@ def stream_file(request, pk):
     response['Content-Length'] = len(ad.picture)
     response.write(ad.picture)
     return response
+
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
+
+@method_decorator(csrf_exempt, name="dispatch")
+class FavouriteView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
+        fav = Fav(user = self.request.user, ad=ad)
+        try:
+            fav.save()
+        except IntegrityError as e:
+            pass
+        return HttpResponse()
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class UnfavouriteView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
+        try:
+            fav = Fav.objects.get(user=self.request.user, ad=ad).delete()
+        except Fav.DoesNotExist as e:
+            pass
+        return HttpResponse()
