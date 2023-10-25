@@ -23,7 +23,6 @@
 <input type="submit" class="btn btn-primary" value="Login Locally" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
 {% if settings.SOCIAL_AUTH_GITHUB_KEY %}
 <hr/>
 <a class="btn btn-info" role="button" href="{% url 'social:begin' 'github' %}?next={{ next }}">
