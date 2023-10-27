@@ -1,0 +1,5 @@
+DjangoProject_venv/
+**/__pycache__/
+*pem
+.env
+github_settings.py
