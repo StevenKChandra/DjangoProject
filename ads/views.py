@@ -20,7 +20,7 @@ class AdListView(View):
 
         if search_key:
             query = Q(title__icontains=search_key)
-            query.add(Q(decription__icontains=search_key), Q.OR)
+            query.add(Q(description__icontains=search_key), Q.OR)
             query.add(Q(tags__name__in=[search_key]), Q.OR)
             ad_list = Ad.objects.filter(query).select_related().distinct().order_by("-updated_at")[:10]
         else:
