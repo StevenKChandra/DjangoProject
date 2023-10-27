@@ -1,6 +1,6 @@
 # DjangoProject
 
-Source code for my website to post job advertisement (https://stevenkchandra.pythonanywhere.com/ads/).
+Source code for my website to post job advertisement (https://stevenkchandra.pythonanywhere.com/ads/). </br>
 Some fucntionality:
 - user authentication (local or via github)
 - create, edit, delete ad
@@ -11,7 +11,7 @@ Some fucntionality:
 - tags to help with search
 - giving comments in each form
 
-please login using:
-username_01/userpassword_01
-username_02/userpassword_02
+please login using:</br>
+username_01/userpassword_01</br>
+username_02/userpassword_02</br>
 or your github account to test the web
