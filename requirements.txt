@@ -1,3 +1,4 @@
+python-dotenv
 django
 django-extensions
 django-crispy-forms
