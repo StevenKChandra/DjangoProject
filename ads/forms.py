@@ -21,7 +21,7 @@ class CreateForm(forms.ModelForm):
 
     class Meta:
         model = Ad
-        fields = ["title", "price", "text", "picture", "tags"]
+        fields = ["title", "salary", "description", "picture", "tags"]
 
     # Validate the size of the picture
     def clean(self):
